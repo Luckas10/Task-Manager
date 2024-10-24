@@ -38,6 +38,11 @@ def register():
         nome = request.form['nome']
         email = request.form['email']
         senha = request.form['senha']
+        confirmar_senha = request.form['confirmar_senha']
+
+        if senha != confirmar_senha:
+            flash('As senhas não coincidem!', 'error')
+            return render_template('register.html')
 
         conn = obter_conexao()
         cursor = conn.cursor()
@@ -47,13 +52,11 @@ def register():
         conn.close()
 
         if existing_user:
-            # Exibe mensagem de erro sem redirecionar
             flash('Esse email já está cadastrado!', 'error')
             return render_template('register.html')
 
         senha_hashed = generate_password_hash(senha)
         
-        # Insere o novo usuário
         conn = obter_conexao()
         cursor = conn.cursor()
         cursor.execute("INSERT INTO tb_usuarios (usr_email, usr_senha, usr_nome) VALUES (%s, %s, %s)",
@@ -62,7 +65,6 @@ def register():
         cursor.close()
         conn.close()
 
-        # Exibe mensagem de sucesso e redireciona para a tela de login
         flash('Usuário registrado com sucesso!', 'success')
         return redirect(url_for('login'))
 
