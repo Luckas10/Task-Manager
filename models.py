@@ -53,7 +53,7 @@ class Task:
             params.append(status)
 
         if data_criacao:
-            query += " AND tar_data_criacao = %s"  # ajuste se o nome da coluna for diferente
+            query += " AND tar_data_criacao = %s"
             params.append(data_criacao)
 
         if data_limite:

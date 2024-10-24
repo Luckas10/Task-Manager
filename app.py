@@ -86,9 +86,8 @@ def criar_tarefa():
         prazo = request.form['prazo']
         prioridade = request.form['prioridade']
         categoria = request.form['categoria']
-        status = request.form['status']  # Novo campo
+        status = request.form['status']
 
-        # Criar a tarefa no banco de dados
         Task.create(titulo, descricao, prazo, prioridade, categoria, status, current_user.id)
 
         flash('Tarefa criada com sucesso!', 'success')
@@ -100,7 +99,6 @@ def criar_tarefa():
 @app.route('/editar-tarefa/<int:id>', methods=['GET', 'POST'])
 @login_required
 def editar_tarefa(id):
-    # Recuperar a tarefa com o ID fornecido
     conn = obter_conexao()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM tb_tarefas WHERE tar_id = %s AND usr_id = %s", (id, current_user.id))
@@ -116,7 +114,6 @@ def editar_tarefa(id):
         categoria = request.form['categoria']
         status = request.form['status']
 
-        # Atualizar a tarefa no banco de dados
         conn = obter_conexao()
         cursor = conn.cursor()
         cursor.execute("""
@@ -132,7 +129,6 @@ def editar_tarefa(id):
         flash('Tarefa atualizada com sucesso!', 'success')
         return redirect(url_for('dashboard'))
 
-    # Se a tarefa não for encontrada, redirecionar
     if tarefa is None:
         flash('Tarefa não encontrada.', 'danger')
         return redirect(url_for('dashboard'))
@@ -150,10 +146,8 @@ def tasks():
     descricao = request.args.get('descricao')
     categoria = request.args.get('categoria')
 
-    # Inicia a consulta
     query = f"SELECT * FROM tb_tarefas WHERE usr_id = {current_user.id}"
 
-    # Adiciona condições com base nos parâmetros recebidos
     if status:
         if status == "1":
             comandoS = "Concluída"
@@ -185,7 +179,6 @@ def tasks():
             comandoC = "Pessoal"
         query += f" AND tar_categoria = '{comandoC}'"
 
-    # Executa a consulta com os parâmetros
     print(query)
     conn = obter_conexao()
     cursor = conn.cursor()

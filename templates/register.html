@@ -148,12 +148,11 @@
     </div>
 
     <script>
-        // Auto-dismiss alert after 3 seconds
         setTimeout(function() {
             const alert = document.querySelector('.alert');
             if (alert) {
                 alert.classList.remove('show');
-                setTimeout(() => alert.remove(), 500); // Remove the alert from DOM after fade-out
+                setTimeout(() => alert.remove(), 500);
             }
         }, 3000);
     </script>
